@@ -43,7 +43,13 @@ The binary will be at `target/release/injektor` (or `injektor.exe` on Windows).
 ## Install via cargo
 
 ```bash
-cargo install --git https://github.com/neozmmv/injektor
+cargo install injektor
+```
+
+or
+
+```bash
+--git https://github.com/neozmmv/injektor
 ```
 
 ## License
