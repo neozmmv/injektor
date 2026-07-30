@@ -52,6 +52,11 @@ or
 cargo install --git https://github.com/neozmmv/injektor
 ```
 
+## Update already installed binary
+```bash
+cargo install injektor --force
+```
+
 ## License
 
 MIT
