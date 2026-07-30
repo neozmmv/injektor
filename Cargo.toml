@@ -2,5 +2,11 @@
 name = "injektor"
 version = "0.1.0"
 edition = "2024"
+description = "A simple CLI to inject environment variables from a .env file when running any command"
+license = "MIT"
+repository = "https://github.com/neozmmv/injektor"
+readme = "README.md"
+keywords = ["cli", "env", "dotenv", "environment-variables"]
+categories = ["command-line-utilities"]
 
 [dependencies]
