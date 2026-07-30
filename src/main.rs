@@ -1,5 +1,6 @@
 use std::{path::PathBuf, println};
 use std::collections::HashMap;
+mod helpers;
 
 fn main() {
     let args: Vec<_> = std::env::args().collect();
@@ -34,7 +35,7 @@ fn main() {
             }
 
             let line_pair: Vec<&str> = line.split("=").collect();
-            map.insert(line_pair[0].trim().to_string(), line_pair[1].trim().to_string());
+            map.insert(helpers::kill_quotes(line_pair[0].trim().to_string()), helpers::kill_quotes(line_pair[1].trim().to_string()));
 
             println!("{line}");
         }
