@@ -31,10 +31,9 @@ fn main() {
                 std::process::exit(1);
             }
             env_file_exists = dir.join(".env").exists();
-            continue; // go back to the top and re-check, instead of falling through
+            continue;
         }
 
-        // found .env file, try to read it
         let env_file = match std::fs::read_to_string(dir.join(".env")) {
             Ok(content) => content,
             Err(e) => {
@@ -46,24 +45,21 @@ fn main() {
         let line_vec: Vec<String> = env_file.lines().map(|s| s.to_string()).collect();
         let mut map: HashMap<String, String> = HashMap::new();
 
-        // for each line in the file
         for (line_number, raw_line) in line_vec.iter().enumerate() {
             let line = raw_line.trim();
 
-            // empty lines or comments
             if line.is_empty() || line.starts_with('#') {
                 continue;
             }
 
-            // split only on the first '=', so values containing '=' stay intact
             match line.split_once('=') {
                 Some((key, value)) => {
-                    let key = helpers::kill_quotes(key.trim().to_string());
-                    let value = helpers::kill_quotes(value.trim().to_string());
+                    let key = key.trim().to_string();
+                    let value = helpers::strip_inline_comment(value.trim());
+                    let value = helpers::kill_quotes(value.to_string());
                     map.insert(key, value);
                 }
                 None => {
-                    // malformed line (no '='), warn but keep going instead of crashing
                     eprintln!(
                         "Warning: ignoring malformed line {} in .env: '{}'",
                         line_number + 1,
@@ -72,7 +68,6 @@ fn main() {
                 }
             }
         }
-        // map ready
 
         let cmd = Command::new(&args[0])
             .args(&args[1..])
@@ -85,7 +80,7 @@ fn main() {
             }
             Err(e) if e.kind() == std::io::ErrorKind::NotFound => {
                 eprintln!("Error: command '{}' not found", args[0]);
-                std::process::exit(127); // shell convention for "command not found"
+                std::process::exit(127);
             }
             Err(e) => {
                 eprintln!("Error running command: {}", e);
