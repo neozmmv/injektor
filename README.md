@@ -49,7 +49,7 @@ cargo install injektor
 or
 
 ```bash
---git https://github.com/neozmmv/injektor
+cargo install --git https://github.com/neozmmv/injektor
 ```
 
 ## License
