@@ -3,11 +3,10 @@ use std::collections::HashMap;
 mod helpers;
 
 fn main() {
-    let args: Vec<_> = std::env::args().collect();
+    let args: Vec<String> = std::env::args().skip(1).collect();
     let mut dir = PathBuf::from(".");
     let mut env_file_exists: bool = dir.join(".env").exists();
     println!("ARGS: {:?}", args);
-    println!("CURRENT DIR: {:?}", dir);
 
     loop {
         if !env_file_exists {
@@ -19,9 +18,9 @@ fn main() {
         }
         
         // found .env file
-        println!("{:?}", env_file_exists);
+        //println!("{:?}", env_file_exists);
         let env_file = std::fs::read_to_string(dir.join(".env")).ok().unwrap();
-        let mut line_vec: Vec<String> = env_file.lines().map(|s| s.to_string()).collect();
+        let line_vec: Vec<String> = env_file.lines().map(|s| s.to_string()).collect();
         
         let mut map: HashMap<String, String> = HashMap::new();
 
@@ -37,10 +36,8 @@ fn main() {
             let line_pair: Vec<&str> = line.split("=").collect();
             map.insert(helpers::kill_quotes(line_pair[0].trim().to_string()), helpers::kill_quotes(line_pair[1].trim().to_string()));
 
-            println!("{line}");
         }
         println!("map {:?}", map);
-        println!("lines: {:?}", line_vec);
         break;
     }
 }
